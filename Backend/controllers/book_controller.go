@@ -11,14 +11,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Get all books
-// @Description Get list of all books with availability information
-// @Tags books
-// @Accept json
-// @Produce json
-// @Success 200 {array} models.Book
-// @Failure 500 {object} map[string]string
-// @Router /books [get]
+// @Summary		Get all books
+// @Description	Get list of all books with availability information
+// @Tags			books
+// @Accept			json
+// @Produce		json
+// @Success		200	{array}		models.Book
+// @Failure		500	{object}	map[string]string
+// @Router			/books [get]
 func GetBooks(c *gin.Context) {
 	var books []models.Book
 
@@ -37,16 +37,16 @@ func GetBooks(c *gin.Context) {
 	})
 }
 
-// @Summary Get book by ID
-// @Description Get detailed information about a specific book including recommendations
-// @Tags books
-// @Accept json
-// @Produce json
-// @Param id path int true "Book ID"
-// @Success 200 {object} models.Book
-// @Failure 400 {object} map[string]string
-// @Failure 404 {object} map[string]string
-// @Router /books/{id} [get]
+// @Summary		Get book by ID
+// @Description	Get detailed information about a specific book including recommendations
+// @Tags			books
+// @Accept			json
+// @Produce		json
+// @Param			id	path		int	true	"Book ID"
+// @Success		200	{object}	models.Book
+// @Failure		400	{object}	map[string]string
+// @Failure		404	{object}	map[string]string
+// @Router			/books/{id} [get]
 func GetBookByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -68,17 +68,17 @@ func GetBookByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": book})
 }
 
-// @Summary Create a new book
-// @Description Create a new book (Admin only)
-// @Tags books
-// @Accept json
-// @Produce json
-// @Param book body models.Book true "Book data"
-// @Success 201 {object} models.Book
-// @Failure 400 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Security BearerAuth
-// @Router /books [post]
+// @Summary		Create a new book
+// @Description	Create a new book (Admin only)
+// @Tags			books
+// @Accept			json
+// @Produce		json
+// @Param			book	body		models.Book	true	"Book data"
+// @Success		201		{object}	models.Book
+// @Failure		400		{object}	map[string]string
+// @Failure		500		{object}	map[string]string
+// @Security		BearerAuth
+// @Router			/books [post]
 func CreateBook(c *gin.Context) {
 	var book models.Book
 

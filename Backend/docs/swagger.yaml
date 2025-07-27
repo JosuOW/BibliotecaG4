@@ -1,0 +1,899 @@
+basePath: /api/v1
+definitions:
+  models.Book:
+    properties:
+      author:
+        type: string
+      available_exemplars:
+        type: integer
+      cover_url:
+        type: string
+      created_at:
+        type: string
+      exemplars:
+        description: Relaciones
+        items:
+          $ref: '#/definitions/models.Exemplar'
+        type: array
+      id:
+        type: integer
+      isbn:
+        type: string
+      pages:
+        minimum: 1
+        type: integer
+      recommendations:
+        items:
+          $ref: '#/definitions/models.Recommendation'
+        type: array
+      title:
+        type: string
+      total_exemplars:
+        type: integer
+      updated_at:
+        type: string
+    required:
+    - author
+    - isbn
+    - title
+    type: object
+  models.Exemplar:
+    properties:
+      acquisition_date:
+        type: string
+      book:
+        allOf:
+        - $ref: '#/definitions/models.Book'
+        description: Relaciones
+      book_id:
+        type: integer
+      code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_available:
+        type: boolean
+      loans:
+        items:
+          $ref: '#/definitions/models.Loan'
+        type: array
+      observations:
+        type: string
+      updated_at:
+        type: string
+    required:
+    - code
+    type: object
+  models.Fine:
+    properties:
+      accumulated_days:
+        type: integer
+      created_at:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      start_date:
+        type: string
+      updated_at:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/models.User'
+        description: Relaciones
+      user_id:
+        type: integer
+    type: object
+  models.FineHistory:
+    properties:
+      accumulated_days:
+        type: integer
+      created_at:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: integer
+      start_date:
+        type: string
+      total_penalty_days:
+        type: integer
+      updated_at:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/models.User'
+        description: Relaciones
+      user_id:
+        type: integer
+    type: object
+  models.Loan:
+    properties:
+      created_at:
+        type: string
+      due_date:
+        type: string
+      exemplar:
+        $ref: '#/definitions/models.Exemplar'
+      exemplar_id:
+        type: integer
+      id:
+        type: integer
+      loan_date:
+        type: string
+      returned_at:
+        type: string
+      updated_at:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/models.User'
+        description: Relaciones
+      user_id:
+        type: integer
+    type: object
+  models.LoanHistory:
+    properties:
+      book:
+        $ref: '#/definitions/models.Book'
+      book_id:
+        type: integer
+      created_at:
+        type: string
+      due_date:
+        type: string
+      exemplar:
+        $ref: '#/definitions/models.Exemplar'
+      exemplar_id:
+        type: integer
+      id:
+        type: integer
+      loan_date:
+        type: string
+      overdue_days:
+        type: integer
+      returned_date:
+        type: string
+      updated_at:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/models.User'
+        description: Relaciones
+      user_id:
+        type: integer
+      was_overdue:
+        type: boolean
+    type: object
+  models.LoanRequest:
+    properties:
+      exemplar_id:
+        type: integer
+    required:
+    - exemplar_id
+    type: object
+  models.LoanResponse:
+    properties:
+      book_author:
+        type: string
+      book_title:
+        type: string
+      due_date:
+        type: string
+      exemplar_code:
+        type: string
+      id:
+        type: integer
+      is_overdue:
+        type: boolean
+      loan_date:
+        type: string
+      overdue_days:
+        type: integer
+      returned_at:
+        type: string
+    type: object
+  models.Recommendation:
+    properties:
+      comment:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      origin_book:
+        allOf:
+        - $ref: '#/definitions/models.Book'
+        description: Relaciones
+      origin_book_id:
+        type: integer
+      target_book:
+        $ref: '#/definitions/models.Book'
+      target_book_id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.User:
+    properties:
+      city:
+        type: string
+      created_at:
+        type: string
+      department_name:
+        description: Solo profesores
+        type: string
+      email:
+        type: string
+      fine:
+        $ref: '#/definitions/models.Fine'
+      fine_history:
+        items:
+          $ref: '#/definitions/models.FineHistory'
+        type: array
+      floor:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      loan_history:
+        items:
+          $ref: '#/definitions/models.LoanHistory'
+        type: array
+      loans:
+        description: Relaciones
+        items:
+          $ref: '#/definitions/models.Loan'
+        type: array
+      login:
+        type: string
+      name:
+        type: string
+      number:
+        type: string
+      parents_phone:
+        description: Campos específicos por tipo
+        type: string
+      postal_code:
+        type: string
+      status:
+        $ref: '#/definitions/models.UserStatus'
+      street:
+        description: Dirección
+        type: string
+      updated_at:
+        type: string
+      user_type:
+        $ref: '#/definitions/models.UserType'
+    required:
+    - email
+    - last_name
+    - login
+    - name
+    - user_type
+    type: object
+  models.UserStatus:
+    enum:
+    - ACTIVE
+    - DEBTOR
+    - FINED
+    type: string
+    x-enum-varnames:
+    - ACTIVE
+    - DEBTOR
+    - FINED
+  models.UserType:
+    enum:
+    - STUDENT
+    - TEACHER
+    - ADMIN
+    type: string
+    x-enum-varnames:
+    - STUDENT
+    - TEACHER
+    - ADMIN
+host: localhost:8000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API para sistema de gestión de biblioteca
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Biblioteca API
+  version: "1.0"
+paths:
+  /admin/fines:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all fines in the system
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Fine status (active, expired)
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Fine'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all fines (Admin only)
+      tags:
+      - fines
+  /admin/fines/process-expired:
+    post:
+      consumes:
+      - application/json
+      description: Process and close expired fines (System job)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Process expired fines
+      tags:
+      - fines
+  /admin/loans:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all loans in the system
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Loan status (active, returned, overdue)
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Loan'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all loans (Admin only)
+      tags:
+      - loans
+  /admin/users:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all users in the system
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get all users (Admin only)
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user in the system
+      parameters:
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create new user (Admin only)
+      tags:
+      - users
+  /books:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all books with availability information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      description: Create a new book (Admin only)
+      parameters:
+      - description: Book data
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create a new book
+      tags:
+      - books
+  /books/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about a specific book including recommendations
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get book by ID
+      tags:
+      - books
+  /fines/history:
+    get:
+      consumes:
+      - application/json
+      description: Get fine history for authenticated user
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.FineHistory'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get fine history
+      tags:
+      - fines
+  /fines/my:
+    get:
+      consumes:
+      - application/json
+      description: Get current fine for authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Fine'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get my current fine
+      tags:
+      - fines
+  /loans:
+    post:
+      consumes:
+      - application/json
+      description: Request a book loan
+      parameters:
+      - description: Loan request
+        in: body
+        name: loan
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoanRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Loan'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create loan
+      tags:
+      - loans
+  /loans/{id}/return:
+    put:
+      consumes:
+      - application/json
+      description: Return a borrowed book
+      parameters:
+      - description: Loan ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Return loan
+      tags:
+      - loans
+  /loans/history:
+    get:
+      consumes:
+      - application/json
+      description: Get loan history for authenticated user
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.LoanHistory'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get loan history
+      tags:
+      - loans
+  /loans/my:
+    get:
+      consumes:
+      - application/json
+      description: Get current loans for authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.LoanResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get my loans
+      tags:
+      - loans
+  /users/profile:
+    get:
+      consumes:
+      - application/json
+      description: Get profile information of the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get current user profile
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update profile information of the authenticated user
+      parameters:
+      - description: User data to update
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update user profile
+      tags:
+      - users
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

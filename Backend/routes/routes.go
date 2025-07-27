@@ -23,22 +23,29 @@ func SetupRoutes() *gin.Engine {
 	// Swagger documentation
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// API routes
+	// Public routes
 	api := r.Group("/api/v1")
 	{
-		// Public routes
-		books := api.Group("/books")
-		{
-			books.GET("", controllers.GetBooks)
-			books.GET("/:id", controllers.GetBookByID)
-		}
+		api.GET("/books", controllers.GetBooks)
+		api.GET("/books/:id", controllers.GetBookByID)
+	}
+	// Protected routes
+	protected := api.Group("/")
+	protected.Use(middleware.AuthMiddleware())
+	{
+		// User routes
+		protected.GET("/loans/my", controllers.GetMyLoans)
+		protected.POST("/loans", controllers.CreateLoan)
+		protected.PUT("/loans/:id/return", controllers.ReturnLoan)
 
-		// Protected routes (TODO: add auth middleware)
-		// protected := api.Group("/")
-		// protected.Use(middleware.AuthMiddleware())
-		// {
-		//     protected.POST("/books", controllers.CreateBook)
-		// }
+		// Admin routes
+		admin := protected.Group("/admin")
+		admin.Use(middleware.RequireRole("ADMIN"))
+		{
+			admin.POST("/users", controllers.CreateUser)
+			admin.POST("/books", controllers.CreateBook)
+			admin.GET("/users", controllers.GetAllUsers)
+		}
 	}
 
 	return r

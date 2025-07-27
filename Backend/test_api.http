@@ -1,0 +1,115 @@
+
+curl -X POST http://localhost:8180/realms/biblioteca/protocol/openid-connect/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "client_id=biblioteca-api" \
+  -d "client_secret=biblioteca-api-secret-2024" \
+  -d "grant_type=password" \
+  -d "username=admin" \
+  -d "password=admin123"
+
+
+
+
+
+### Health Check
+GET http://localhost:8000/health
+
+### Get all books
+GET http://localhost:8000/api/v1/books
+
+### Get book by ID
+GET http://localhost:8000/api/v1/books/1
+
+### 1. Obtener token desde Keycloak
+POST http://localhost:8180/realms/biblioteca/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password
+&client_id=biblioteca-api
+&client_secret=biblioteca-api-secret-2024
+&username=admin
+&password=admin123
+
+### ⚠️ Copia el access_token de la respuesta y pégalo en el campo {{token}} para usarlo abajo
+
+###
+
+### 2. Obtener perfil de usuario autenticado
+GET http://localhost:8000/api/user/profile
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4R1JTbEVUY0xiMGVtQjFEV1UzYTVwQXpKZ1pPekdjTjVqWk4xOFlBQ3ZnIn0.eyJleHAiOjE3NTM1NjE5MzMsImlhdCI6MTc1MzU2MDEzMywianRpIjoib25ydHJvOjBmZjVjNjVjLTkyNzYtOTI1Yy02Y2Y4LWRhODI2MGJlODJmYSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODE4MC9yZWFsbXMvYmlibGlvdGVjYSIsInN1YiI6IjkxZmE1ODNhLWUwNDUtNGI2My04ZGQ5LTJlNzY0ZDZhZmRkYyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImJpYmxpb3RlY2EtYXBpIiwic2lkIjoiYmUyYmY5NDctYWQ2Ny00Nzc1LTljYzctNTY5ZTNlZWYzNjViIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJBRE1JTiIsIlVTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkFkbWluIFNpc3RlbWEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiIsImdpdmVuX25hbWUiOiJBZG1pbiIsImZhbWlseV9uYW1lIjoiU2lzdGVtYSIsImVtYWlsIjoiYWRtaW5AYmlibGlvdGVjYS5jb20ifQ.P3Cyen8-Zec_92V69GDpZs9HAY9R6CEBesDzlz3f-Ol_5bBVHtmqqK-eWXXm_r9ZBE_oNwRwfigqQu2eaQ42Az7FmcPgOZ_f_7nnE_T8xRCQAfbm5xVf6s4_GX-fqYV_zPosfH8UV_aPoJ-ZRImSgy6pLpaa6PMRrk-O__YZUPN-WXcf0kKZbXon5E3t9pMURhGQG4AZZ4wFsX41eSShMLzeBaeKPlydYuMsUm-UygxEbhROPM8Rz_gPX28210lCKbpB8LUDx8H2cW-3nIGiS-0hfGIgJhHLdRgfJWEnuV01MZ-9WrppmyoCP8aBm8F3EyJMXyv8lQOf-y9oUl9JaQ
+
+###
+
+### 3. Obtener todos los libros
+GET http://localhost:3001/api/books
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4R1JTbEVUY0xiMGVtQjFEV1UzYTVwQXpKZ1pPekdjTjVqWk4xOFlBQ3ZnIn0.eyJleHAiOjE3NTM1NjE5MzMsImlhdCI6MTc1MzU2MDEzMywianRpIjoib25ydHJvOjBmZjVjNjVjLTkyNzYtOTI1Yy02Y2Y4LWRhODI2MGJlODJmYSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODE4MC9yZWFsbXMvYmlibGlvdGVjYSIsInN1YiI6IjkxZmE1ODNhLWUwNDUtNGI2My04ZGQ5LTJlNzY0ZDZhZmRkYyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImJpYmxpb3RlY2EtYXBpIiwic2lkIjoiYmUyYmY5NDctYWQ2Ny00Nzc1LTljYzctNTY5ZTNlZWYzNjViIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJBRE1JTiIsIlVTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkFkbWluIFNpc3RlbWEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiIsImdpdmVuX25hbWUiOiJBZG1pbiIsImZhbWlseV9uYW1lIjoiU2lzdGVtYSIsImVtYWlsIjoiYWRtaW5AYmlibGlvdGVjYS5jb20ifQ.P3Cyen8-Zec_92V69GDpZs9HAY9R6CEBesDzlz3f-Ol_5bBVHtmqqK-eWXXm_r9ZBE_oNwRwfigqQu2eaQ42Az7FmcPgOZ_f_7nnE_T8xRCQAfbm5xVf6s4_GX-fqYV_zPosfH8UV_aPoJ-ZRImSgy6pLpaa6PMRrk-O__YZUPN-WXcf0kKZbXon5E3t9pMURhGQG4AZZ4wFsX41eSShMLzeBaeKPlydYuMsUm-UygxEbhROPM8Rz_gPX28210lCKbpB8LUDx8H2cW-3nIGiS-0hfGIgJhHLdRgfJWEnuV01MZ-9WrppmyoCP8aBm8F3EyJMXyv8lQOf-y9oUl9JaQ
+
+###
+
+### 4. Obtener detalles de un libro (cambia :id por uno válido)
+GET http://localhost:3001/api/books/1
+Authorization: Bearer {{token}}
+
+###
+
+### 5. Crear un préstamo (requiere rol USER)
+POST http://localhost:3001/api/loans
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "user_id": 1,
+  "book_id": 1
+}
+
+###
+### Crear un nuevo libro
+POST http://localhost:8000/api/books
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ4R1JTbEVUY0xiMGVtQjFEV1UzYTVwQXpKZ1pPekdjTjVqWk4xOFlBQ3ZnIn0.eyJleHAiOjE3NTM1NjE5MzMsImlhdCI6MTc1MzU2MDEzMywianRpIjoib25ydHJvOjBmZjVjNjVjLTkyNzYtOTI1Yy02Y2Y4LWRhODI2MGJlODJmYSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODE4MC9yZWFsbXMvYmlibGlvdGVjYSIsInN1YiI6IjkxZmE1ODNhLWUwNDUtNGI2My04ZGQ5LTJlNzY0ZDZhZmRkYyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImJpYmxpb3RlY2EtYXBpIiwic2lkIjoiYmUyYmY5NDctYWQ2Ny00Nzc1LTljYzctNTY5ZTNlZWYzNjViIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJBRE1JTiIsIlVTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkFkbWluIFNpc3RlbWEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJhZG1pbiIsImdpdmVuX25hbWUiOiJBZG1pbiIsImZhbWlseV9uYW1lIjoiU2lzdGVtYSIsImVtYWlsIjoiYWRtaW5AYmlibGlvdGVjYS5jb20ifQ.P3Cyen8-Zec_92V69GDpZs9HAY9R6CEBesDzlz3f-Ol_5bBVHtmqqK-eWXXm_r9ZBE_oNwRwfigqQu2eaQ42Az7FmcPgOZ_f_7nnE_T8xRCQAfbm5xVf6s4_GX-fqYV_zPosfH8UV_aPoJ-ZRImSgy6pLpaa6PMRrk-O__YZUPN-WXcf0kKZbXon5E3t9pMURhGQG4AZZ4wFsX41eSShMLzeBaeKPlydYuMsUm-UygxEbhROPM8Rz_gPX28210lCKbpB8LUDx8H2cW-3nIGiS-0hfGIgJhHLdRgfJWEnuV01MZ-9WrppmyoCP8aBm8F3EyJMXyv8lQOf-y9oUl9JaQ
+
+Content-Type: application/json
+
+{
+  "title": "El Principito",
+  "author": "Antoine de Saint-Exupéry",
+  "publisher": "Reynal & Hitchcock",
+  "year": 1943,
+  "genre": "Fábula"
+}
+### 6. Devolver un libro (requiere préstamo activo)
+PUT http://localhost:3001/api/loans/1/return
+Authorization: Bearer {{token}}
+
+###
+
+### 7. Obtener préstamos actuales del usuario
+GET http://localhost:3001/api/loans/current
+Authorization: Bearer {{token}}
+
+###
+
+### 8. Crear nuevo libro (requiere rol ADMIN)
+POST http://localhost:3001/api/admin/books
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Cien años de soledad",
+  "author": "Gabriel García Márquez",
+  "description": "Novela clásica de realismo mágico",
+  "quantity": 3
+}
+### Create new book (cuando implementes auth)
+# POST http://localhost:8000/api/v1/books
+# Content-Type: application/json
+# Authorization: Bearer YOUR_JWT_TOKEN
+# 
+# {
+#   "isbn": "978-84-376-0494-7",
+#   "title": "El Quijote",
+#   "author": "Miguel de Cervantes",
+#   "pages": 863,
+#   "total_exemplars": 3,
+#   "available_exemplars": 3,
+#   "cover_url": "https://example.com/quijote.jpg"
+# }

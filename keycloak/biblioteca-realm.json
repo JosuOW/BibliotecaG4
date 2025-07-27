@@ -1,0 +1,115 @@
+{
+  "realm": "biblioteca",
+  "enabled": true,
+  "registrationAllowed": true,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "sslRequired": "none",
+  "roles": {
+    "realm": [
+      {
+        "name": "USER",
+        "description": "User role for students and teachers"
+      },
+      {
+        "name": "ADMIN",
+        "description": "Administrator role"
+      },
+      {
+        "name": "STUDENT",
+        "description": "Student role"
+      },
+      {
+        "name": "TEACHER", 
+        "description": "Teacher role"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "biblioteca-api",
+      "name": "Biblioteca API",
+      "description": "Backend API client",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "biblioteca-api-secret-2024",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "access.token.lifespan": "1800"
+      },
+      "defaultRoles": ["USER"]
+    },
+    {
+      "clientId": "biblioteca-frontend",
+      "name": "Biblioteca Frontend",
+      "description": "Frontend React client", 
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "protocol": "openid-connect",
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://127.0.0.1:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+      ],
+      "defaultRoles": ["USER"]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "firstName": "Admin",
+      "lastName": "Sistema",
+      "email": "admin@biblioteca.com",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["ADMIN", "USER"]
+    },
+    {
+      "username": "student1",
+      "firstName": "Juan",
+      "lastName": "Pérez",
+      "email": "juan.perez@estudiante.com",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "student123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["STUDENT", "USER"]
+    },
+    {
+      "username": "teacher1",
+      "firstName": "María",
+      "lastName": "García",
+      "email": "maria.garcia@profesor.com",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "teacher123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["TEACHER", "USER"]
+    }
+  ]
+}
