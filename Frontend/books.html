@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Libros</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+   <div id="sidebar">
+    <h2>Biblioteca JTech</h2>
+    <ul>
+      <li><a href="books.html"class="active">Listado de libros</a></li>
+      <li><a href="mybooks.html" >Mis libros</a></li>
+      <li><a href="index.html">🚪 Salir</a></li>
+    </ul>
+  </div>
+
+  <!-- Contenido principal -->
+  <div id="app">
+    <div class="container">
+      <h1>Listado de libros</h1>
+      
+      <div class="books-grid" id="books-grid">
+        <!-- Los libros se cargarán aquí -->
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination">
+        <button id="prev-btn" onclick="previousPage()">← Anterior</button>
+        <span class="page-info" id="page-info">1 / 10</span>
+        <button id="next-btn" onclick="nextPage()">Siguiente →</button>
+      </div>
+
+      <div id="error-message"></div>
+    </div>
+  </div>
+
+  <script>
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
+  <script src="js/books.js"></script>
+</body>
+</html>

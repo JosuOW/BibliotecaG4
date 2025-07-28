@@ -29,12 +29,14 @@ func SetupRoutes() *gin.Engine {
 		api.GET("/books", controllers.GetBooks)
 		api.GET("/books/:id", controllers.GetBookByID)
 	}
+
 	// Protected routes
 	protected := api.Group("/")
 	protected.Use(middleware.AuthMiddleware())
 	{
 		// User routes
 		protected.GET("/loans/my", controllers.GetMyLoans)
+		protected.GET("/loans/history", controllers.GetLoanHistory) // ✅ ← Agregada
 		protected.POST("/loans", controllers.CreateLoan)
 		protected.PUT("/loans/:id/return", controllers.ReturnLoan)
 

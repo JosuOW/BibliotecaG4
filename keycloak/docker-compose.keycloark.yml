@@ -15,6 +15,20 @@ services:
     networks:
       - keycloak-network
 
+  postgres-biblioteca:
+    image: postgres:16
+    container_name: postgres-biblioteca
+    environment:
+      POSTGRES_DB: biblioteca_db
+      POSTGRES_USER: biblioteca
+      POSTGRES_PASSWORD: biblioteca123
+    ports:
+      - "5432:5432"
+    volumes:
+      - biblioteca_data:/var/lib/postgresql/data
+    networks:
+      - keycloak-network
+
   keycloak:
     image: quay.io/keycloak/keycloak:22.0
     container_name: keycloak
@@ -37,6 +51,7 @@ services:
 
 volumes:
   keycloak_postgres_data:
+  biblioteca_data:
 
 networks:
   keycloak-network:

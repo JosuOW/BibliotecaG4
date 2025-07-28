@@ -41,7 +41,7 @@ func GetMyLoans(c *gin.Context) {
 	var loans []models.Loan
 	result := database.DB.Preload("Exemplar").
 		Preload("Exemplar.Book").
-		Where("user_id = ? AND returned_at IS NULL", user.ID).
+		Where("user_id = ? AND due_date >= ?", user.ID, time.Now()).
 		Find(&loans)
 
 	if result.Error != nil {
@@ -116,38 +116,28 @@ func CreateLoan(c *gin.Context) {
 		return
 	}
 
-	// Verificar límite de préstamos
-	currentLoans := user.GetCurrentLoansCount(database.DB)
-	maxLoans := int64(user.GetMaxLoans())
-	if currentLoans >= maxLoans {
-		c.JSON(http.StatusConflict, gin.H{
-			"error":         "Loan limit exceeded",
-			"current_loans": currentLoans,
-			"max_loans":     maxLoans,
-		})
-		return
-	}
-
-	// Buscar ejemplar disponible
-	var exemplar models.Exemplar
-	result := database.DB.Preload("Book").
-		Where("id = ? AND is_available = true", loanRequest.ExemplarID).
-		First(&exemplar)
-
-	if result.Error != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Exemplar not available"})
-		return
-	}
+// Buscar ejemplar disponible (tratando exemplar_id como book_id)
+var exemplar models.Exemplar
+if err := database.DB.Preload("Book").
+    Where("book_id = ? AND is_available = true", loanRequest.ExemplarID).
+    First(&exemplar).Error; err != nil {
+	c.JSON(http.StatusNotFound, gin.H{"error": "No hay ejemplares disponibles para este libro"})
+	return
+}
 
 	// Crear préstamo en transacción
 	err := database.DB.Transaction(func(tx *gorm.DB) error {
 		// Crear préstamo
-		loan := models.Loan{
-			UserID:     user.ID,
-			ExemplarID: exemplar.ID,
-			LoanDate:   time.Now(),
-			DueDate:    time.Now().AddDate(0, 0, user.GetLoanDays()),
-		}
+		now := time.Now()
+due := now.AddDate(0, 0, 5) // siempre 5 días
+loan := models.Loan{
+    UserID:     user.ID,
+    ExemplarID: exemplar.ID,
+    LoanDate:   now,
+    DueDate:    due,
+    ReturnedAt: &due,
+}
+
 
 		if err := tx.Create(&loan).Error; err != nil {
 			return err

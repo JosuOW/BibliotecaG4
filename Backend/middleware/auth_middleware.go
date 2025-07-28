@@ -1,12 +1,16 @@
 package middleware
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 
+	"biblioteca-backend/database"
+	"biblioteca-backend/models"
 	"biblioteca-backend/services"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -44,9 +48,55 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// Guardar información del usuario en el context
+		// Obtener login desde el token
+		userLogin := keycloakService.GetUserLogin(claims)
+
+		// Buscar usuario en base de datos por login
+		var user models.User
+		err = database.DB.Where("login = ?", userLogin).First(&user).Error
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			// Buscar por email primero
+			var existingByEmail models.User
+			errEmail := database.DB.Where("email = ?", claims.Email).First(&existingByEmail).Error
+			if errEmail == nil {
+				user = existingByEmail
+				userLogin = existingByEmail.Login
+			} else if errors.Is(errEmail, gorm.ErrRecordNotFound) {
+				// Crear nuevo usuario
+				user = models.User{
+					Login:  userLogin,
+					Name:   claims.GivenName + " " + claims.FamilyName,
+					Email:  claims.Email,
+					Status: models.ACTIVE,
+				}
+				if err := database.DB.Create(&user).Error; err != nil {
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"error":   "Error creating user",
+						"details": err.Error(),
+					})
+					c.Abort()
+					return
+				}
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error":   "Error checking user email",
+					"details": errEmail.Error(),
+				})
+				c.Abort()
+				return
+			}
+		} else if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error":   "Error fetching user",
+				"details": err.Error(),
+			})
+			c.Abort()
+			return
+		}
+
+		// Guardar en el contexto
 		c.Set("user_claims", claims)
-		c.Set("user_login", keycloakService.GetUserLogin(claims))
+		c.Set("user_login", userLogin)
 		c.Set("token", tokenString)
 
 		c.Next()

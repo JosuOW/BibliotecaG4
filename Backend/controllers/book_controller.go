@@ -22,11 +22,15 @@ import (
 func GetBooks(c *gin.Context) {
 	var books []models.Book
 
-	result := database.DB.Preload("Exemplars").Find(&books)
-	if result.Error != nil {
+	// 👇 Esto asegura que los ejemplares estén incluidos
+	err := database.DB.
+		Preload("Exemplars").
+		Find(&books).Error
+
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Error al obtener libros",
-			"details": result.Error.Error(),
+			"details": err.Error(),
 		})
 		return
 	}
@@ -36,6 +40,7 @@ func GetBooks(c *gin.Context) {
 		"count": len(books),
 	})
 }
+
 
 // @Summary		Get book by ID
 // @Description	Get detailed information about a specific book including recommendations

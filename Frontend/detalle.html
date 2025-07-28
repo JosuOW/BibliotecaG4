@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle del Libro</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <h2>Biblioteca JTech</h2>
+    <ul>
+      <li><a href="books.html">Listado de libros</a></li>
+      <li><a href="mybooks.html">Mis libros</a></li>
+      <li><a href="index.html" onclick="logout()">🚪 Salir (Domingo)</a></li>
+    </ul>
+  </div>
+
+  <!-- Contenido principal -->
+  <div id="app">
+    <div class="container">
+      <!-- Detalle del libro -->
+      <div class="book-detail">
+        <div class="book-detail-content">
+          <div class="book-detail-image">
+            <div class="book-image-large">200 x 400</div>
+            <button class="btn-reserve" onclick="reserveBook()">Reservar</button>
+          </div>
+          
+          <div class="book-detail-info">
+            <h1 id="book-title">Head First Design Patterns</h1>
+            <p class="book-author" id="book-author">Freeman & Freeman</p>
+            
+            <div class="book-metadata">
+              <div class="metadata-item">
+                <span class="metadata-label">ISBN</span>
+                <span class="metadata-value" id="book-isbn">1234567890</span>
+              </div>
+              <div class="metadata-item">
+                <span class="metadata-label">Páginas</span>
+                <span class="metadata-value" id="book-pages">180</span>
+              </div>
+              <div class="metadata-item">
+                <span class="metadata-label">Ejemplares</span>
+                <span class="metadata-value" id="book-copies">10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recomendaciones -->
+      <div class="recommendations-section">
+        <h2>Recomendaciones</h2>
+        <div class="recommendations-grid" id="recommendations-grid">
+          <!-- Las recomendaciones se cargarán aquí -->
+        </div>
+      </div>
+
+      <div id="error-message"></div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script src="js/detalle.js"></script>
+</body>
+</html>

@@ -1,20 +1,20 @@
 package middleware
 
 import (
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func CORSMiddleware() gin.HandlerFunc {
-	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{
-		"http://http://172.30.112.158:3000", // React dev server
-		"http://http://172.30.112.158:3001",
-		"http://http://172.30.112.158:3000",
+	config := cors.Config{
+		AllowOrigins:     []string{"http://127.0.0.1:5500"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
 	}
-	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
-	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
-	config.AllowCredentials = true
-
 	return cors.New(config)
 }

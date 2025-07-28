@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis libros</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <h2>Biblioteca JTech</h2>
+    <ul>
+      <li><a href="books.html">Listado de libros</a></li>
+      <li><a href="mybooks.html" class="active">Mis libros</a></li>
+      <li><a href="index.html">🚪 Salir</a></li>
+    </ul>
+  </div>
+
+  <!-- Contenido principal -->
+  <div id="app">
+    <div class="container">
+      <h1>Mis libros</h1>
+      
+      <!-- Tabla de libros prestados -->
+      <div class="mybooks-section">
+        <table id="mybooks-table" class="mybooks-table">
+          <thead>
+            <tr>
+              <th>ISBN</th>
+              <th>Título</th>
+              <th>Fecha préstamo</th>
+              <th>Fecha devolución</th>
+            </tr>
+          </thead>
+          <tbody id="mybooks-tbody">
+            <!-- Los libros se cargarán aquí -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sección de multas -->
+      <div class="fines-section">
+        <h2>Multas</h2>
+        <div class="fine-info" id="fine-info">
+          
+        </div>
+      </div>
+
+      <div id="error-message"></div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script src="js/mybooks.js"></script>
+</body>
+</html>

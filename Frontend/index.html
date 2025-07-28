@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca</title>
+  <link rel="stylesheet" href="css/menu.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1 id="welcome">Bienvenido a la Biblioteca</h1>
+    <nav>
+      <ul>
+        <li><a href="books.html">Libros</a></li>
+        <li><a href="mybooks.html">Mis Reservas</a></li>
+        <li><a href="history.html">Historial</a></li>
+      </ul>
+    </nav>
+    <button onclick="logout()">Cerrar sesión</button>
+  </div>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("token_expires_in");
+      localStorage.removeItem("token_timestamp");
+      localStorage.removeItem("user_info");
+      window.location.href = "login.html";
+    }
+
+    function isTokenExpired() {
+      const timestamp = localStorage.getItem('token_timestamp');
+      const expiresIn = localStorage.getItem('token_expires_in');
+
+      if (!timestamp || !expiresIn) return true;
+
+      const now = Date.now();
+      const age = (now - parseInt(timestamp)) / 1000;
+
+      return age >= parseInt(expiresIn) - 10;
+    }
+
+    function validarToken() {
+      const token = localStorage.getItem('access_token');
+      if (!token || isTokenExpired()) {
+        alert('Error al iniciar sesión: Token inválido o expirado.');
+        logout();
+        return false;
+      }
+      return true;
+    }
+
+    function mostrarBienvenida() {
+      const userInfo = JSON.parse(localStorage.getItem('user_info') || '{}');
+      const name = userInfo.name || userInfo.preferred_username || 'usuario';
+
+      document.getElementById('welcome').textContent = `Bienvenido, ${name}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (validarToken()) {
+        mostrarBienvenida();
+      }
+    });
+  </script>
+</body>
+</html>

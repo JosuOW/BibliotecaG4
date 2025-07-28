@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Biblioteca JTech</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sección izquierda con logo -->
+        <div class="left-section">
+            <div class="logo-section">
+                <div class="logo">
+                    <span class="logo-text">📦</span>
+                </div>
+                <h1>Biblioteca JTech</h1>
+                <p>Manejo de préstamo de libros</p>
+            </div>
+        </div>
+
+        <!-- Sección derecha con formulario -->
+        <div class="right-section">
+            <div class="login-box">
+                <div class="login-header">
+                    <h2>Inicia sesión en Biblioteca JTech</h2>
+                </div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email"
+                            placeholder="nombre@ejemplo.com" 
+                            required 
+                            autocomplete="email"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            placeholder="••••••••" 
+                            required 
+                            autocomplete="current-password"
+                        />
+                    </div>
+
+                    <button type="submit" class="btn-login">Ingresar</button>
+
+                    <div class="divider">
+                        <span>o Ingresa con</span>
+                    </div>
+
+                    <div class="social-buttons">
+                        <button type="button" class="btn-social" title="Google">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyLjU2IDEyLjI1QzIyLjU2IDExLjQ3IDIyLjQ5IDEwLjcyIDIyLjM2IDEwSDEyVjE0LjI2SDE3LjkyQzE3LjY2IDE1LjYgMTYuOTIgMTYuNzUgMTUuODQgMTcuNUwxNS44NCAyMC4yM0gxOS40NEMyMS4xNyAxOC41NiAyMi41NiAxNS41NyAyMi41NiAxMi4yNVoiIGZpbGw9IiM0Mjg1RjQiLz4KPHBhdGggZD0iTTEyIDI0QzE1LjI0IDI0IDE3LjkyIDIyLjkyIDE5LjQ0IDIwLjIzTDE1Ljg0IDE3LjVDMTQuNzMgMTguMiAxMy4yMyAxOC42NyAxMiAxOC42N0M4Ljg3IDE4LjY3IDYuMjIgMTYuOTMgNS4zNSAxNC40SDEuNzJWMTcuMTNDMy4yNCAyMC4xMSA7LjI2IDI0IDEyIDI0WiIgZmlsbD0iIzM0QTg1MyIvPgo8cGF0aCBkPSJNNS4zNSAxNC40QzUuMDkgMTMuNyA0Ljk0IDEyLjkgNC45NCAxMkM0Ljk0IDExLjEgNS4wOSAxMC4zIDUuMzUgOS42VjYuODdIMS43MkMwLjg4IDguNjkgMC4zNiAxMC4zIDAgMTJDMCAxMy43IDAuODggMTUuMzEgMS43MiAxNy4xM0w1LjM1IDE0LjRaIiBmaWxsPSIjRkJCQzA0Ii8+CjxwYXRoIGQ9Ik0xMiA1LjMzQzEzLjMgNS4zMyAxNC40MiA1LjggMTUuNCA2LjczTDE4LjY1IDMuNDhDMTYuOTIgMS42OSAxNC41NCAwIDEyIDBDNy4yNiAwIDMuMjQgMy44OSAxLjcyIDYuODdMNS4zNSA5LjZDNi4yMiA3LjA3IDguODcgNS4zMyAxMiA1LjMzWiIgZmlsbD0iI0VBNDM1NSIvPgo8L3N2Zz4K" alt="Google" />
+                        </button>
+                        <button type="button" class="btn-social" title="Facebook">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIzLjQ0IDEyQzIzLjQ0IDUuMzcgMTguNjMgMC41NiAxMiAwLjU2QzUuMzcgMC41NiAwLjU2IDUuMzcgMC41NiAxMkMwLjU2IDE3Ljk4IDQuODQgMjIuOTUgMTAuNDQgMjMuNDRWMTUuMTJINy40NFYxMkgxMC40NFY5LjM3QzEwLjQ0IDYuNDUgMTIuMjkgNC44IDE0Ljk2IDQuOEMxNi4yMiA0LjggMTcuNTMgNS4wMyAxNy41MyA1LjAzVjcuOTFIMTYuMDlDMTQuNTYgNy45MSAxNCAxMy42MyAxNCAxMkgxNy4wM0wxNi4zMiAxNS4xMkgxNFYyMy40NEMxOS41NiAyMi45NSAyMy40NCAxNy45OCAyMy40NCAxMloiIGZpbGw9IiMxODc3RjIiLz4KPC9zdmc+" alt="Facebook" />
+                        </button>
+                        <button type="button" class="btn-social" title="Apple">
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIyLjQ2IDE2VjIwSDIuMDZWMTZIMjIuNDZaIiBmaWxsPSIjMDAwIi8+CjxwYXRoIGQ9Ik0yMi40NiA0VjhIMi4wNlY0SDIyLjQ2WiIgZmlsbD0iIzAwMCIvPgo8cGF0aCBkPSJNMjIuNDYgMTBWMTRIMi4wNlYxMEgyMi40NloiIGZpbGw9IiMwMDAiLz4KPC9zdmc+" alt="Apple" />
+                        </button>
+                    </div>
+                </form>
+
+                <p id="login-error" class="login-error"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>
